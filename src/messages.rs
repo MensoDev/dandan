@@ -1,7 +1,8 @@
+use crate::engine::Engine;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Message {
-    EngineReady,
+    EngineReady(Engine),
     InputChanged(String),
     NavigationDown,
     NavigationUp,
