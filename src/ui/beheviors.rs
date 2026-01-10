@@ -1,5 +1,3 @@
-use std::process::Command;
-
 use iced::{Task, clipboard, widget::operation::AbsoluteOffset};
 
 use crate::{DandanLauncher, Message, ProviderResult, ui::UserInterface};
@@ -27,12 +25,20 @@ impl UserInterface {
                             let text = format!("{} :: ", gitmoji.emoji);
                             return clipboard::write(format!("{} :: ", gitmoji.emoji))
                                 .chain(Task::future(async move {
-
-                                    let _ = Command::new("wl-copy")
-                                        .arg(&text)
-                                        .spawn();
-
-                                    tokio::time::sleep(std::time::Duration::from_millis(100)).await
+                                    crate::copy(&text);
+                                    tokio::time::sleep(std::time::Duration::from_millis(10)).await
+                                }))
+                            .map(|_| Message::Exit);
+                        }
+                        Task::none()
+                    },
+                    ProviderResult::Apps(apps) => {
+                        if let Some(app) = &apps.get(state.selected_index as usize) {
+                            let exec = app.action.exec.clone();
+                            let terminal = app.action.terminal;
+                            return Task::none().chain(Task::future(async move {
+                                    crate::launcher(&exec, terminal);
+                                    tokio::time::sleep(std::time::Duration::from_millis(10)).await
                                 }))
                             .map(|_| Message::Exit);
                         }

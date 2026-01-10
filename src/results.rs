@@ -1,7 +1,8 @@
-use crate::providers::Gitmoji;
+use crate::providers::{DesktopEntry, Gitmoji};
 
 #[derive(Debug, Clone)]
 pub enum ProviderResult {
     None,
-    Gitmoji(Vec<Gitmoji>)
+    Gitmoji(Vec<Gitmoji>),
+    Apps(Vec<DesktopEntry>)
 }

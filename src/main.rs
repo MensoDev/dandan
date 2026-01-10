@@ -13,6 +13,9 @@ pub use messages::Message;
 pub use state::DandanLauncher;
 pub use results::ProviderResult;
 
+pub use utils::copy;
+pub use utils::launcher;
+
 fn main() -> iced::Result {
     iced::application(DandanLauncher::init, DandanLauncher::update, DandanLauncher::view)
         .title("dandan")

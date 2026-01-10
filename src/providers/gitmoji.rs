@@ -1,9 +1,6 @@
 use std::fs;
-
 use serde::Deserialize;
-
 use crate::{ProviderResult, engine::Provider, utils::get_config_path};
-
 
 #[derive(Debug)]
 pub struct GitmojiProvider {
@@ -25,7 +22,7 @@ impl Provider for GitmojiProvider  {
         if let Some(emojis) = &self.gitmojis {
             let r = emojis
                 .iter()
-                .filter(|e| e.name.contains(query) || e.description.contains(query))
+                .filter(|e| e.name.to_lowercase().contains(&query.to_lowercase()) || e.description.to_lowercase().contains(&query.to_lowercase()))
                 .cloned()
                 .collect();
 

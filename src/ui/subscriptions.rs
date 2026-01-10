@@ -12,6 +12,12 @@ impl UserInterface {
                         Key::Named(Named::Enter) => {
                             Some(Message::ExecuteAction)
                         },
+                        Key::Named(Named::Escape) => {
+                            Some(Message::Exit)
+                        },
+                        Key::Character(ch) if ch == "q" && modifiers.command() => {
+                            Some(Message::Exit)
+                        },
                         Key::Character(ch) if ch == "n" && modifiers.command() => {
                             Some(Message::NavigationDown)
                         },
