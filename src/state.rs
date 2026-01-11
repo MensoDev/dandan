@@ -46,6 +46,7 @@ impl DandanLauncher {
     pub fn try_select_next(&mut self) {
         match &self.result {
             ProviderResult::None => { self.selected_index = 0; },
+            ProviderResult::Calculator(_) => { self.selected_index = 0; },
             ProviderResult::Gitmoji(gitmojis) => {
                 if self.selected_index + 1 > gitmojis.len() - 1 {
                     self.selected_index = 0
@@ -66,6 +67,7 @@ impl DandanLauncher {
     pub fn try_select_previous(&mut self) {
         match &self.result {
             ProviderResult::None => { self.selected_index = 0; },
+            ProviderResult::Calculator(_) => { self.selected_index = 0; },
             ProviderResult::Gitmoji(gitmojis) => {
                 if self.selected_index == 0 {
                     self.selected_index = gitmojis.len() - 1;

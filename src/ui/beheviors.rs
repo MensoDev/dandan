@@ -32,14 +32,26 @@ impl UserInterface {
                         }
                         Task::none()
                     },
+                    ProviderResult::Calculator(calc) => {
+                        if let Some(result) = &calc.result {
+                            let text = result.clone();
+                            return clipboard::write(text.clone())
+                                .chain(Task::future(async move {
+                                    crate::LauncherUtils::copy(&text);
+                                    tokio::time::sleep(std::time::Duration::from_millis(10)).await
+                                }))
+                            .map(|_| Message::Exit);
+                        }
+                        Task::none()
+                    },
                     ProviderResult::Apps(apps) => {
                         if let Some(app) = &apps.get(state.selected_index as usize) {
                             let exec = app.action.exec.clone();
                             let terminal = app.action.terminal;
                             return Task::none().chain(Task::future(async move {
-                                    crate::LauncherUtils::run(&exec, terminal);
-                                    tokio::time::sleep(std::time::Duration::from_millis(10)).await
-                                }))
+                                crate::LauncherUtils::run(&exec, terminal);
+                                tokio::time::sleep(std::time::Duration::from_millis(10)).await
+                            }))
                             .map(|_| Message::Exit);
                         }
                         Task::none()

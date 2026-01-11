@@ -16,6 +16,10 @@ impl UserInterface {
                 let items = gitmojis_view(emojis, state.selected_index, state.scrollable_id.clone());
                 col = col.push(items);
             }
+            ProviderResult::Calculator(calc) => {
+                let items = Components::calculator_item(calc);
+                col = col.push(items);
+            }
             ProviderResult::Apps(apps) => {
                 let items = apps_view(apps, state.selected_index, state.scrollable_id.clone());
                 col = col.push(items);
