@@ -1,6 +1,6 @@
 use iced::{Alignment, Color, Element, Font, Length::{self, Fill}, Theme, font::Weight, widget::{Image, Svg, column, container, image, row, scrollable, svg, text, text_input}};
 
-use crate::{DandanLauncher, Message, ProviderResult, providers::{DesktopEntry, Gitmoji}, ui::UserInterface};
+use crate::{DandanLauncher, Message, ProviderResult, providers::{DesktopEntry, Gitmoji}, ui::{UserInterface, components::{Components}}};
 
 impl UserInterface {
     pub fn render(state: &DandanLauncher) -> Element<'_, Message> {
@@ -21,8 +21,7 @@ impl UserInterface {
                 col = col.push(items);
             }
             _ => {
-                let h = text("type something to search anything kkkk").center().width(Fill).height(Fill);
-                col = col.push(h);
+                col = col.push(Components::menu(state));
             }
         }
 

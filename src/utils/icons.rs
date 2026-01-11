@@ -110,8 +110,5 @@ impl IconsUtils {
 
         None
     }
-
-
-
 }
 
