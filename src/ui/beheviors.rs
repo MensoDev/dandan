@@ -25,7 +25,7 @@ impl UserInterface {
                             let text = format!("{} :: ", gitmoji.emoji);
                             return clipboard::write(format!("{} :: ", gitmoji.emoji))
                                 .chain(Task::future(async move {
-                                    crate::copy(&text);
+                                    crate::LauncherUtils::copy(&text);
                                     tokio::time::sleep(std::time::Duration::from_millis(10)).await
                                 }))
                             .map(|_| Message::Exit);
@@ -37,7 +37,7 @@ impl UserInterface {
                             let exec = app.action.exec.clone();
                             let terminal = app.action.terminal;
                             return Task::none().chain(Task::future(async move {
-                                    crate::launcher(&exec, terminal);
+                                    crate::LauncherUtils::run(&exec, terminal);
                                     tokio::time::sleep(std::time::Duration::from_millis(10)).await
                                 }))
                             .map(|_| Message::Exit);

@@ -1,4 +1,4 @@
-use std::{fs::{self, File}, io::{self, BufRead, BufReader}, path::{Path, PathBuf}};
+use std::{fs::{self, File}, io::{self, BufRead, BufReader}, path::{PathBuf}};
 
 use crate::{ProviderResult, engine::Provider};
 
@@ -104,73 +104,6 @@ fn parse(path: &str, entries: &mut Vec<DesktopEntry>) {
     }
 }
 
-fn resolve_icon(icon: &str) -> Option<PathBuf> {
-    let icon_path = Path::new(icon);
-
-    // 1. Caminho absoluto (JetBrains, AppImage, etc)
-    if icon_path.is_absolute() && icon_path.exists() {
-        return Some(icon_path.to_path_buf());
-    }
-
-    // 2. Caminho relativo
-    if icon.contains('/') {
-        let p = PathBuf::from(icon);
-        if p.exists() {
-            return Some(p);
-        }
-    }
-
-    let bases = [
-        PathBuf::from("/usr/share/icons"),
-    ];
-
-    let themes = ["hicolor", "Adwaita"]; // Adwaita ajuda MUITO
-
-    let sizes = ["scalable", "48x48", "32x32", "24x24"];
-    let contexts = [
-        "apps",
-        "categories",
-        "devices",
-        "actions",
-        "status",
-        "places",
-        "mimetypes",
-    ];
-
-    for base in bases {
-        for theme in themes {
-            for size in sizes {
-                for ctx in contexts {
-                    let svg = base
-                        .join(theme)
-                        .join(size)
-                        .join(ctx)
-                        .join(format!("{icon}.svg"));
-                    if svg.exists() {
-                        return Some(svg);
-                    }
-
-                    let png = base
-                        .join(theme)
-                        .join(size)
-                        .join(ctx)
-                        .join(format!("{icon}.png"));
-                    if png.exists() {
-                        return Some(png);
-                    }
-                }
-            }
-        }
-    }
-
-    // 3. Pixmaps fallback
-    let pix = PathBuf::from("/usr/share/pixmaps").join(format!("{icon}.png"));
-    if pix.exists() {
-        return Some(pix);
-    }
-
-    None
-}
 
 fn create_desktop_action(path: &PathBuf) -> io::Result<(DesktopAction, Vec<DesktopAction>)> {
     let file = File::open(path)?;
@@ -206,7 +139,7 @@ fn create_desktop_action(path: &PathBuf) -> io::Result<(DesktopAction, Vec<Deskt
             temp.comment = comment.to_string();
         } else if let Some(icon) = line.strip_prefix(ICON_TOKEN) {
             temp.icon = icon.to_string();
-            temp.icon_path = resolve_icon(icon)
+            temp.icon_path = crate::IconsUtils::resolve(icon);
         } else if let Some(exec) = line.strip_prefix(EXEC_TOKEN) {
             temp.exec = exec.to_string();
         } else if let Some(no_display) = line.strip_prefix(NO_DISPLAY_TOKEN) {

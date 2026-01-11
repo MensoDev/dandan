@@ -1,6 +1,6 @@
 use std::fs;
 use serde::Deserialize;
-use crate::{ProviderResult, engine::Provider, utils::get_config_path};
+use crate::{ProviderResult, engine::Provider};
 
 #[derive(Debug)]
 pub struct GitmojiProvider {
@@ -33,7 +33,7 @@ impl Provider for GitmojiProvider  {
     }
 
     fn init(&mut self) {
-        if let Some(path) = get_config_path("gitmojis.json") {
+        if let Some(path) = crate::PathUtils::get_config_path("gitmojis.json") {
             if let Ok(content) = fs::read_to_string(path) {
                 if let Ok(emojis) = serde_json::from_str(&content) {
                     self.gitmojis = Some(emojis);
