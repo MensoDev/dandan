@@ -28,7 +28,7 @@ impl Engine {
     }
 
     pub fn search(&self, query: &str) -> Option<ProviderResult> {
-        let (key, query) = self.try_take_key(query.trim_start())?;
+        let (key, query) = self.try_take_key(query.trim())?;
 
         self.providers
             .get(&key)
@@ -36,12 +36,13 @@ impl Engine {
     }
 
     fn try_take_key(&self, query: &str) -> Option<(ProviderType, String)> {
-        let first_char = query.trim_start().chars().next()?;
+        let first_char = query.chars().next()?;
 
         for key in &self.keys {
             if let ProviderType::Key(token) = key {
                 if *token == first_char {
-                    return Some((key.clone(), query[1..].to_string()));
+                    let command = if query.len() > 2 { query[1..].trim().to_string() } else { String::new() };
+                    return Some((key.clone(), command));
                 }
             }
         }

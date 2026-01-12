@@ -28,9 +28,6 @@ impl ClipboardUtils {
 
             entries.push(ClipboardEntry { id, content });
         }
-
-        println!("{:?}", entries);
-
         Some(entries)
     }
 
