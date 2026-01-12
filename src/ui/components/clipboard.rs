@@ -1,4 +1,4 @@
-use iced::{Alignment, Color, Element, Font, Length::{self, Fill}, Theme, font::Weight, widget::{ column, container, row, scrollable, text }};
+use iced::{Alignment, Color, Element, Font, Length::{self, Fill}, Theme, font::{Style, Weight}, widget::{ column, container, row, scrollable, text }};
 
 use crate::{Message, providers::ClipboardEntry, ui::components::Components};
 
@@ -26,6 +26,7 @@ impl Components {
 
         let title = text(format!("{}", entry.content))
             .size(16)
+            .wrapping(text::Wrapping::None)
             .font(Font {
                 weight: Weight::Bold,
                 ..Font::DEFAULT
