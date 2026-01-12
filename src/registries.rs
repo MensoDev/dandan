@@ -1,4 +1,4 @@
-use crate::{engine::{Engine, ProviderType}, providers::{ApplicationProvider, CalculatorProvider, GitmojiProvider}};
+use crate::{engine::{Engine, ProviderType}, providers::{ApplicationProvider, CalculatorProvider, ClipboardProvider, GitmojiProvider}};
 
 
 impl Engine {
@@ -16,6 +16,10 @@ impl Engine {
         let mut calculator = CalculatorProvider::new();
         engine.init(&mut calculator);
         engine.register(ProviderType::Key('='), calculator);
+
+        let mut clipboard = ClipboardProvider::new();
+        engine.init(&mut clipboard);
+        engine.register(ProviderType::Key(';'), clipboard);
 
         engine
     }

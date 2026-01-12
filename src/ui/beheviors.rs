@@ -44,6 +44,17 @@ impl UserInterface {
                         }
                         Task::none()
                     },
+                    ProviderResult::Clipboard(entries) => {
+                        if let Some(entry) = &entries.get(state.selected_index as usize) {
+                            let id = entry.id;
+                            return Task::none().chain(Task::future(async move {
+                                crate::ClipboardUtils::copy(&id);
+                                tokio::time::sleep(std::time::Duration::from_millis(10)).await
+                            }))
+                            .map(|_| Message::Exit);
+                        }
+                        Task::none()
+                    },
                     ProviderResult::Apps(apps) => {
                         if let Some(app) = &apps.get(state.selected_index as usize) {
                             let exec = app.action.exec.clone();

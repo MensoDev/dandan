@@ -20,6 +20,10 @@ impl UserInterface {
                 let items = Components::calculator_item(calc);
                 col = col.push(items);
             }
+            ProviderResult::Clipboard(entries) => {
+                let items = Components::clipboard_items(entries, state.selected_index, state.scrollable_id.clone());
+                col = col.push(items);
+            }
             ProviderResult::Apps(apps) => {
                 let items = apps_view(apps, state.selected_index, state.scrollable_id.clone());
                 col = col.push(items);

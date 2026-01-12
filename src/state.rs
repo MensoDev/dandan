@@ -54,6 +54,13 @@ impl DandanLauncher {
                     self.selected_index += 1;
                 }
             },
+            ProviderResult::Clipboard(entries) => {
+                if self.selected_index + 1 > entries.len() - 1 {
+                    self.selected_index = 0
+                } else {
+                    self.selected_index += 1;
+                }
+            },
             ProviderResult::Apps(apps) => {
                 if self.selected_index + 1 > apps.len() - 1 {
                     self.selected_index = 0
@@ -71,6 +78,13 @@ impl DandanLauncher {
             ProviderResult::Gitmoji(gitmojis) => {
                 if self.selected_index == 0 {
                     self.selected_index = gitmojis.len() - 1;
+                } else {
+                    self.selected_index -= 1;
+                }
+            },
+            ProviderResult::Clipboard(entries) => {
+                if self.selected_index == 0 {
+                    self.selected_index = entries.len() - 1;
                 } else {
                     self.selected_index -= 1;
                 }

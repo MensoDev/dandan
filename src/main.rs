@@ -16,6 +16,7 @@ pub use results::ProviderResult;
 pub use utils::PathUtils;
 pub use utils::LauncherUtils;
 pub use utils::IconsUtils;
+pub use utils::ClipboardUtils;
 
 fn main() -> iced::Result {
     iced::application(DandanLauncher::init, DandanLauncher::update, DandanLauncher::view)

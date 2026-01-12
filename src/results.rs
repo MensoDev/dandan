@@ -1,4 +1,4 @@
-use crate::providers::{CalculatorResult, DesktopEntry, Gitmoji};
+use crate::providers::{CalculatorResult, ClipboardEntry, DesktopEntry, Gitmoji};
 
 #[derive(Debug, Clone)]
 pub enum ProviderResult {
@@ -6,4 +6,5 @@ pub enum ProviderResult {
     Gitmoji(Vec<Gitmoji>),
     Apps(Vec<DesktopEntry>),
     Calculator(CalculatorResult),
+    Clipboard(Vec<ClipboardEntry>),
 }

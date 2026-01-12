@@ -17,6 +17,7 @@ impl Components {
             hello, 
             hint("to search gitmojis", &':'), 
             hint("to calculate something", &'='), 
+            hint("to search clipboard entry", &';'), 
         ]
             .spacing(16)
             .width(Fill)
